@@ -1,10 +1,9 @@
 import React from 'react';
 import { StyleSheet,Text,View,StatusBar} from 'react-native';
-import { createBottomTabNavigator, createStackNavigator } from 'react-navigation';
-// import { createBottomTabNavigator, createStackNavigator } from 'react-native-deprecated-custom-components';
 import { Constants } from 'expo';
 import { Provider } from 'react-redux';
 import { MaterialCommunityIcons, FontAwesome } from '@expo/vector-icons';
+import { TabNavigator, StackNavigator } from 'react-navigation';
 import reducer from './reducers/reduce';
 import CreateDeck from './components/CreateDeck';
 import ShowDeck from './components/ShowDeck';
@@ -18,20 +17,20 @@ import { setLocalNotification } from './utils/notifications';
 
 
 const NotificationStatusBar=() =>{
-  return (
-  <View style={{ height: Constants.statusBarHeight }}>
-  <StatusBar />
-  </View>
-  );
+      return (
+      <View style={{ height: Constants.statusBarHeight }}>
+      <StatusBar />
+      </View>
+      );
 }
 
 
-const Tabs = createBottomTabNavigator({
+const TabsMove = TabNavigator({
   ShowDeck: {
     screen: ShowDeck,
     navigationOptions: {
       tabBarLabel: 'Decks',
-      tabBarIcon: ({ tintColor }) => <MaterialCommunityIcons name='cards' size={30} color={tintColor} />
+      tabBarIcon: ({ tintColor }) => <MaterialCommunityIcons name='add-circle-outline' size={30} color={tintColor} />
     }
   },
   CreateDeck: {
@@ -47,9 +46,9 @@ const Tabs = createBottomTabNavigator({
   }
 });
 
-const Navigator = createStackNavigator({
-  Home: {
-    screen: Tabs
+const NavigatorMove = StackNavigator({
+  Main: {
+    screen: TabsMove
   },
   DeckData: {
     screen: DeckData
@@ -66,6 +65,7 @@ export default class App extends React.Component {
   
 
    componentDidMount() {
+
     setLocalNotification();
   }
 
@@ -74,10 +74,10 @@ export default class App extends React.Component {
   render() {
     return (
      <Provider store={createStore(reducer)}>
-      <View style={styles.container}>
+      <View style={styles.contentArea}>
       
           <NotificationStatusBar/>
-       <Navigator />
+       <NavigatorMove />
       </View>
        </Provider>
     );
@@ -85,7 +85,9 @@ export default class App extends React.Component {
 }
 
 const styles = StyleSheet.create({
-  container: {
-    flex: 1
+  contentArea: {
+    flex: 1,
+       backgroundColor: 'teal',
+    padding: 10
   }
 });

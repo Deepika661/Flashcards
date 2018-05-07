@@ -9,52 +9,51 @@ export function clearLocalNotifications() {
 }
 
 
-export function createLocalNotificatio(){
-  return{
-    title: "FlashTheCard reminders checkup",
-    body: 'Log in for today and Stay updated.',
-    ios: {
-      sound: true
-    },
-    android: {
-      sound: true,
-      priority: 'high',
-      sticky: false,
-      vibrate: true
-    }
-  };
+export function createLocalNotification(){
+    return{
+      title: "FlashTheCard Reminders!!",
+      body: 'Check your reminders for the day.',
+      ios: {
+        sound: true
+      },
+      android: {
+        sound: true,
+        priority: 'high',
+        sticky: false,
+        vibrate: true
+      }
+    };
 }
 
 
 export function setLocalNotification(){
-  AsyncStorage.getItem(NOTIFICATION_KEY)
-    .then(JSON.parse)
-    .then((data) => {
-      if (data === null) {
-        Permissions.askAsync(Permissions.NOTIFICATIONS)
-          .then(({ status }) => {
-           
-            // console.log(`status: ${status}`);
+    AsyncStorage.getItem(NOTIFICATION_KEY)
+      .then(JSON.parse)
+       .then((data) => {
+        if (data === null) {
+          Permissions.askAsync(Permissions.NOTIFICATIONS)
+            .then(({ status }) => {
             
-            if (status === 'granted') {
-              Notifications.cancelAllScheduledNotificationsAsync();
+              
+              if (status === 'granted') {
+                Notifications.cancelAllScheduledNotificationsAsync();
 
-              let tomorrow = new Date();
-              tomorrow.setDate(tomorrow.getDate() + 1);
-              tomorrow.setHours(20);
-              tomorrow.setMinutes(0);
+                let tomorrow = new Date();
+                tomorrow.setDate(tomorrow.getDate() + 1);
+                tomorrow.setHours(20);
+                tomorrow.setMinutes(0);
 
-              Notifications.scheduleLocalNotificationAsync(
-                createLocalNotification(),
-                {
-                  time: tomorrow,
-                  repeat: 'hour'
-                }
-              );
+                Notifications.scheduleLocalNotificationAsync(
+                  createLocalNotification(),
+                  {
+                    time: tomorrow,
+                    repeat: 'hour'
+                  }
+                );
 
-              AsyncStorage.setItem(NOTIFICATION_KEY, JSON.stringify(true));
-            }
-          });
-      }
-    });
+                AsyncStorage.setItem(NOTIFICATION_KEY, JSON.stringify(true));
+              }
+            });
+        }
+      });
 }

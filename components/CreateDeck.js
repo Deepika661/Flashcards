@@ -1,29 +1,30 @@
 import React, { Component } from 'react';
 import { View, Text, TextInput, Button, StyleSheet, Platform } from 'react-native';
 import { NavigationActions } from 'react-navigation';
-// import { NavigationActions } from 'react-native-deprecated-custom-components';
-
-import { connect } from 'react-redux';
 import {addNewDeck} from '../actions/action';
 import {saveNewDeck} from '../utils/apis';
-
+import { connect } from 'react-redux';
+import { addNavigationHelpers } from 'react-navigation';
 
 class CreateDeck extends Component {
-	 state = {
-    title: ''
+
+  	 state = {
+      title: ''
   }
 
- submit = () => {
-    const { title } = this.state;
-    saveNewDeck(title);
-    this.props.addNewDeck(title);
-    const resetDeck = NavigationActions.reset({
-      index: 1,
-	      actions: [
+ onSubmit = () => {
 
-	        NavigationActions.navigate({ routeName: 'Home' }),
-	        NavigationActions.navigate({ routeName: 'DeckData', params: { id: title } })
-	      ]
+    const { title } = this.state;
+
+    saveNewDeck(title);
+
+      this.props.addNewDeck(title);
+      const resetDeck = NavigationActions.reset({
+        index: 1,
+  	      actions: [
+  	        NavigationActions.navigate({ routeName: 'Main' }),
+  	        NavigationActions.navigate({ routeName: 'DeckData', params: { id: title } })
+  	      ]
     });
 
     this.props.navigation.dispatch(resetDeck);
@@ -32,19 +33,19 @@ class CreateDeck extends Component {
 
   render() {
     return (
-      <View style={styles.container}>
-        <Text style={styles.text}>Please Enter New Deck Name:</Text>
+      <View style={styles.contentArea}>
+        <Text style={styles.text}>Enter name for the deck:</Text>
         <TextInput
-          style={styles.input}
-          placeholder='Deck Name'
+          style={styles.inputData}
+          placeholder='Enter Deck Name'
           onChangeText={(title) => this.setState({ title: title })}
           value={this.state.title}
         />
 
         <View style={styles.button}>
           <Button
-            title='Create NewDeck'
-            onPress={this.submit}
+            title='Create New Deck'
+            onPress={this.onSubmit}
           />
         </View>
       </View>
@@ -52,7 +53,7 @@ class CreateDeck extends Component {
   }
 }
 const styles = StyleSheet.create({
-  container: {
+  contentArea: {
     flex: 1, alignItems: 'center', justifyContent: 'flex-start'
   },
   text: {
@@ -61,7 +62,7 @@ const styles = StyleSheet.create({
     padding: 10,
     margin: 10
   },
-  input: {
+  inputData: {
     fontSize: 30,
     alignSelf: 'stretch',
     borderColor: 'gray',
@@ -76,9 +77,10 @@ const styles = StyleSheet.create({
 });
 
 function mapDispatchToProps(dispatch) {
-  return {
-    addNewDeck: (deck) => dispatch(addNewDeck(deck))
-  };
+  
+    return {
+      addNewDeck: (deck) => dispatch(addNewDeck(deck))
+    };
 }
 
-export default connect(null, mapDispatchToProps)(CreateDeck);
+export default connect(null,mapDispatchToProps)(CreateDeck);

@@ -3,9 +3,9 @@ import { setFirstDecks } from './apis';
 export const DECKS_KEY = 'FlashTheCards';
 
 	export function setdata(res) {
-	  	return data === null
+	  	return res === null
 	   	 ? setfirstData()
-	    	: data;
+	    	: res;
 	}
 
 	export function setfirstData() {
