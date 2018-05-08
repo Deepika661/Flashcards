@@ -9,3 +9,12 @@ npm install
 npm start
 
 ```
+
+
+```
+Technologies used:
+React
+Redux
+React-Native
+
+```
