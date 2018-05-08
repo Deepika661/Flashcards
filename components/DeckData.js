@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { Text, View, StyleSheet, Button } from 'react-native';
 import { connect } from 'react-redux';
+import Pluralize from 'pluralize';
 
 class DeckData extends Component {
 
@@ -19,7 +20,7 @@ static navigationOptions = ({ navigation }) => {
           <View style={styles.title}>
             <Text style={{ fontSize: 40 }}>{deck.title}</Text>
             <Text style={{ fontSize: 30, color: 'gray' }}>
-              {'card', deck.questions.length, true}
+            {Pluralize('card', deck.questions.length, true)}
             </Text>
           </View>
 
